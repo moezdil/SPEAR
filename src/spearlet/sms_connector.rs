@@ -87,23 +87,3 @@ pub async fn connect_sms_channel_retry(
         Err(SmsConnectError::Timeout { attempts })
     }
 }
-
-pub async fn connect_sms_channel_status_once(
-    config: &SpearletConfig,
-) -> Result<Channel, tonic::Status> {
-    connect_sms_channel_once(config).await.map_err(|e| match e {
-        SmsConnectError::Timeout { .. } => tonic::Status::deadline_exceeded(e.to_string()),
-        _ => tonic::Status::unavailable(e.to_string()),
-    })
-}
-
-pub async fn connect_sms_channel_status_retry(
-    config: &SpearletConfig,
-) -> Result<Channel, tonic::Status> {
-    connect_sms_channel_retry(config)
-        .await
-        .map_err(|e| match e {
-            SmsConnectError::Timeout { .. } => tonic::Status::deadline_exceeded(e.to_string()),
-            _ => tonic::Status::unavailable(e.to_string()),
-        })
-}
