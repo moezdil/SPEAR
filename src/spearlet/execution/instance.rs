@@ -210,8 +210,6 @@ pub struct TaskInstance {
     pub runtime_handle: Arc<parking_lot::RwLock<Option<Box<dyn std::any::Any + Send + Sync>>>>,
     /// Instance secret for authentication / 实例认证密钥
     pub secret: Arc<parking_lot::RwLock<Option<String>>>,
-    /// Listening address for communication / 通信监听地址
-    pub listening_address: Arc<parking_lot::RwLock<Option<String>>>,
     /// Creation timestamp / 创建时间戳
     pub created_at: SystemTime,
     /// Last updated timestamp / 最后更新时间戳
@@ -235,7 +233,6 @@ impl TaskInstance {
             metrics: Arc::new(parking_lot::RwLock::new(InstanceMetrics::default())),
             runtime_handle: Arc::new(parking_lot::RwLock::new(None)),
             secret: Arc::new(parking_lot::RwLock::new(None)),
-            listening_address: Arc::new(parking_lot::RwLock::new(None)),
             created_at: now,
             updated_at: Arc::new(parking_lot::RwLock::new(now)),
             current_execution_id: Arc::new(parking_lot::RwLock::new(None)),
@@ -320,12 +317,6 @@ impl TaskInstance {
     /// Get instance secret / 获取实例密钥
     pub fn get_secret(&self) -> Option<String> {
         self.secret.read().clone()
-    }
-
-    /// Set listening address / 设置监听地址
-    pub fn set_listening_address(&self, address: String) {
-        *self.listening_address.write() = Some(address);
-        *self.updated_at.write() = SystemTime::now();
     }
 
     /// Check if instance is ready to accept requests / 检查实例是否准备接受请求
