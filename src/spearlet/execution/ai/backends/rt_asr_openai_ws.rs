@@ -72,9 +72,7 @@ impl BackendAdapter for OpenAIRealtimeWsBackendAdapter {
         if req.operation != crate::spearlet::execution::ai::ir::Operation::SpeechToText {
             return Err(CanonicalError {
                 code: "unsupported_operation".to_string(),
-                message:
-                    "rt_asr_openai_ws only supports speech_to_text streaming"
-                        .to_string(),
+                message: "rt_asr_openai_ws only supports speech_to_text streaming".to_string(),
                 retryable: false,
                 operation: Some(req.operation.clone()),
             });

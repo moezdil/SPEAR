@@ -86,8 +86,8 @@ mod tests {
     use crate::ai_backend_types::BACKEND_PROVIDER_INTERNAL;
     use crate::proto::sms::BackendSpec;
     use crate::proto::spearlet::{CandidateDecision, FinalAction};
-    use crate::spearlet::execution::ai::backends::KIND_STUB;
     use crate::spearlet::execution::ai::backends::stub::StubBackendAdapter;
+    use crate::spearlet::execution::ai::backends::KIND_STUB;
     use crate::spearlet::execution::ai::ir::Operation;
     use crate::spearlet::execution::ai::router::capabilities::Capabilities;
     use crate::spearlet::execution::ai::router::registry::Hosting;

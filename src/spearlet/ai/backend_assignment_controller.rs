@@ -745,8 +745,8 @@ mod tests {
     use super::*;
     use crate::ai_backend_types::{
         BACKEND_FAMILY_LLAMACPP, BACKEND_FAMILY_OLLAMA_CHAT, BACKEND_FAMILY_VLLM,
-        BACKEND_FAMILY_VLLM_OPENAI_COMPATIBLE,
-        BACKEND_PROVIDER_OLLAMA, BACKEND_PROVIDER_OPENAI, BACKEND_PROVIDER_VLLM,
+        BACKEND_FAMILY_VLLM_OPENAI_COMPATIBLE, BACKEND_PROVIDER_OLLAMA, BACKEND_PROVIDER_OPENAI,
+        BACKEND_PROVIDER_VLLM,
     };
     use crate::proto::sms::{
         AiBackendDesiredState, AiBackendManagementMode, AiBackendPlacementRecord, AiBackendRecord,
@@ -876,7 +876,8 @@ mod tests {
         let mut client = test_client();
         let mut runtime_backends = Vec::new();
         let mut live_local_ids = std::collections::HashSet::new();
-        let mut assignment = sample_assignment(AiBackendHosting::Remote, BACKEND_FAMILY_OLLAMA_CHAT);
+        let mut assignment =
+            sample_assignment(AiBackendHosting::Remote, BACKEND_FAMILY_OLLAMA_CHAT);
         let backend = assignment.backend.as_mut().expect("backend");
         backend.provider = BACKEND_PROVIDER_OLLAMA.to_string();
         backend.credential_ref = None;
@@ -913,7 +914,10 @@ mod tests {
         let status = controller
             .materialize_assignment(
                 &mut client,
-                &clear_assignment_base_url(sample_assignment(AiBackendHosting::Local, BACKEND_FAMILY_VLLM)),
+                &clear_assignment_base_url(sample_assignment(
+                    AiBackendHosting::Local,
+                    BACKEND_FAMILY_VLLM,
+                )),
                 &mut runtime_backends,
                 &mut live_local_ids,
                 "node-1",
@@ -935,7 +939,10 @@ mod tests {
         let status = controller
             .materialize_assignment(
                 &mut client,
-                &clear_assignment_base_url(sample_assignment(AiBackendHosting::Local, BACKEND_FAMILY_VLLM)),
+                &clear_assignment_base_url(sample_assignment(
+                    AiBackendHosting::Local,
+                    BACKEND_FAMILY_VLLM,
+                )),
                 &mut runtime_backends,
                 &mut live_local_ids,
                 "node-1",

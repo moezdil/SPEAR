@@ -102,9 +102,7 @@ impl BackendAdapter for QwenAsrRealtimeWsBackendAdapter {
         if req.operation != Operation::SpeechToText {
             return Err(CanonicalError {
                 code: "unsupported_operation".to_string(),
-                message:
-                    "rt_asr_qwen_ws only supports speech_to_text streaming"
-                        .to_string(),
+                message: "rt_asr_qwen_ws only supports speech_to_text streaming".to_string(),
                 retryable: false,
                 operation: Some(req.operation.clone()),
             });

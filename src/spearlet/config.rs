@@ -1153,9 +1153,7 @@ impl LocalBackendConfigView {
             CanonicalBackendProvider::Internal => LocalBackendProviderView::Internal(self),
             CanonicalBackendProvider::OpenAi
             | CanonicalBackendProvider::Qwen
-            | CanonicalBackendProvider::Unknown(_) => {
-                LocalBackendProviderView::Unknown(self)
-            }
+            | CanonicalBackendProvider::Unknown(_) => LocalBackendProviderView::Unknown(self),
         }
     }
 }

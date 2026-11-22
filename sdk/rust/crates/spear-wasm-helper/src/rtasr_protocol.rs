@@ -16,7 +16,10 @@ pub enum TranscriptEvent {
     /// 当前句子的全量实时预览（Qwen 风格的 `text` + `stash`）。`text` 为已确认
     /// 前缀，`stash` 为临时后缀。消费者应以 `text + stash` 作为当前预览，
     /// 并替换同一句子之前的预览。
-    Preview { text: String, stash: String },
+    Preview {
+        text: String,
+        stash: String,
+    },
     Completed(Option<String>),
 }
 
@@ -41,8 +44,7 @@ pub fn parse_transcript_event(payload: &[u8]) -> Option<TranscriptEvent> {
         // plus `stash` (provisional suffix), sent at high frequency.
         // Qwen 实时 ASR 实时预览：累积的 `text`（已确认前缀）加上 `stash`
         // （临时后缀），高频发送。
-        "input_audio_transcription.text"
-        | "conversation.item.input_audio_transcription.text" => {
+        "input_audio_transcription.text" | "conversation.item.input_audio_transcription.text" => {
             let text = value
                 .get("text")
                 .and_then(Value::as_str)
@@ -114,7 +116,9 @@ mod tests {
     fn parse_qwen_text_event_tolerates_missing_fields() {
         // Keep the byte payload ASCII-only so the test can use raw bytes directly.
         // 保持字节 payload 为纯 ASCII，这样测试可以直接使用原始字节。
-        let payload = "{\"type\":\"input_audio_transcription.text\",\"stash\":\"\\u5317\\u4eac\\u7684\"}".as_bytes();
+        let payload =
+            "{\"type\":\"input_audio_transcription.text\",\"stash\":\"\\u5317\\u4eac\\u7684\"}"
+                .as_bytes();
         let event = parse_transcript_event(payload).unwrap();
         assert_eq!(
             event,

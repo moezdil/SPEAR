@@ -146,8 +146,7 @@ fn test_qwen_realtime_asr_live_transcribes_fixture_audio() {
     let transport_param = serde_json::json!({"key": "transport", "value": "websocket"});
     let backend_param = serde_json::json!({"key": "backend", "value": backend_name});
     let model_param = serde_json::json!({"key": "model", "value": model});
-    let sample_rate_param =
-        serde_json::json!({"key": "sample_rate", "value": SAMPLE_RATE_HZ});
+    let sample_rate_param = serde_json::json!({"key": "sample_rate", "value": SAMPLE_RATE_HZ});
 
     api.rtasr_ctl(fd, 7, Some(segmentation.to_string().as_bytes()))
         .unwrap();
@@ -209,9 +208,7 @@ fn test_qwen_realtime_asr_live_transcribes_fixture_audio() {
     let normalized = transcript.to_lowercase();
     assert!(!normalized.trim().is_empty(), "transcript={transcript}");
     assert!(
-        normalized.contains("hello")
-            || normalized.contains("qwen")
-            || normalized.contains("test"),
+        normalized.contains("hello") || normalized.contains("qwen") || normalized.contains("test"),
         "unexpected transcript={transcript}"
     );
     assert!(saw_session_finished, "session.finished not observed");

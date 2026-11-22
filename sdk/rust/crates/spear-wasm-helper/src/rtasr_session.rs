@@ -2,8 +2,8 @@
 //! Rust-first 示例共享的 RTASR 会话骨架。
 
 use spear_wasm::{
-    rtasr_clear, rtasr_close, rtasr_connect, rtasr_create, rtasr_flush, rtasr_read_alloc,
-    rtasr_get_status, rtasr_set_autoflush_json, rtasr_set_param_string, rtasr_write, Fd,
+    rtasr_clear, rtasr_close, rtasr_connect, rtasr_create, rtasr_flush, rtasr_get_status,
+    rtasr_read_alloc, rtasr_set_autoflush_json, rtasr_set_param_string, rtasr_write, Fd,
     RtAsrStatus, SpearError,
 };
 

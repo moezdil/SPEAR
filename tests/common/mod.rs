@@ -52,11 +52,15 @@ fn matches_backend_filters(
 
 /// Resolve one concrete backend entry plus its env-backed credential.
 /// 解析单个 backend 条目及其对应的 env 类型凭据。
-fn resolve_backend_entry(cfg: &SpearletConfig, backend: &AiBackendConfig) -> Option<ResolvedBackend> {
+fn resolve_backend_entry(
+    cfg: &SpearletConfig,
+    backend: &AiBackendConfig,
+) -> Option<ResolvedBackend> {
     let cred_name = backend.credential_ref.as_ref()?;
-    let cred = cfg.ai.credentials.iter().find(|c| {
-        c.name == *cred_name && c.kind == "env" && !c.api_key_env.trim().is_empty()
-    })?;
+    let cred =
+        cfg.ai.credentials.iter().find(|c| {
+            c.name == *cred_name && c.kind == "env" && !c.api_key_env.trim().is_empty()
+        })?;
 
     let env_name = cred.api_key_env.trim().to_string();
     let api_key = std::env::var(&env_name).ok()?.trim().to_string();
@@ -106,11 +110,7 @@ pub fn resolve_realtime_asr_backend() -> Option<ResolvedBackend> {
     if !live_tests_enabled() {
         return None;
     }
-    resolve_backend(
-        "speech_to_text",
-        "websocket",
-        &["rt_asr_openai_ws"],
-    )
+    resolve_backend("speech_to_text", "websocket", &["rt_asr_openai_ws"])
 }
 
 /// Resolve a Qwen realtime ASR backend from the shared live-test config.
@@ -120,11 +120,7 @@ pub fn resolve_qwen_realtime_asr_backend() -> Option<ResolvedBackend> {
     if !live_tests_enabled() {
         return None;
     }
-    resolve_backend(
-        "speech_to_text",
-        "websocket",
-        &["rt_asr_qwen_ws"],
-    )
+    resolve_backend("speech_to_text", "websocket", &["rt_asr_qwen_ws"])
 }
 
 /// Resolve all configured realtime ASR backends that are ready for live tests.
@@ -137,9 +133,6 @@ pub fn resolve_all_realtime_asr_backends() -> Vec<ResolvedBackend> {
     resolve_backends(
         "speech_to_text",
         "websocket",
-        &[
-            "rt_asr_openai_ws",
-            "rt_asr_qwen_ws",
-        ],
+        &["rt_asr_openai_ws", "rt_asr_qwen_ws"],
     )
 }

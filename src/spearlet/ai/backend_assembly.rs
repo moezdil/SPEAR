@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
 use crate::ai_backend_types::{
-    CanonicalBackendHosting, CanonicalBackendKind, CanonicalBackendOrigin, CanonicalBackendProvider,
-    BACKEND_FAMILY_CHAT_HTTP, BACKEND_FAMILY_LLAMACPP, BACKEND_FAMILY_OLLAMA_CHAT,
-    BACKEND_FAMILY_RT_ASR_OPENAI_WS, BACKEND_FAMILY_RT_ASR_QWEN_WS, BACKEND_FAMILY_STUB,
-    BACKEND_PROVIDER_INTERNAL, BACKEND_PROVIDER_LLAMACPP, BACKEND_PROVIDER_OLLAMA,
-    BACKEND_PROVIDER_OPENAI,
+    CanonicalBackendHosting, CanonicalBackendKind, CanonicalBackendOrigin,
+    CanonicalBackendProvider, BACKEND_FAMILY_CHAT_HTTP, BACKEND_FAMILY_LLAMACPP,
+    BACKEND_FAMILY_OLLAMA_CHAT, BACKEND_FAMILY_RT_ASR_OPENAI_WS, BACKEND_FAMILY_RT_ASR_QWEN_WS,
+    BACKEND_FAMILY_STUB, BACKEND_PROVIDER_INTERNAL, BACKEND_PROVIDER_LLAMACPP,
+    BACKEND_PROVIDER_OLLAMA, BACKEND_PROVIDER_OPENAI,
 };
 use crate::proto::sms::{BackendHosting, BackendInfo, BackendOrigin, BackendSpec, BackendStatus};
 use crate::spearlet::ai::credential_resolver::CredentialResolver;
@@ -13,8 +13,8 @@ use crate::spearlet::config::{
     AiBackendConfig, AiBackendProviderView, AiBackendTypedView, LocalBackendConfigView,
     LocalBackendProviderView, RemoteBackendConfigView, RemoteBackendProviderView,
 };
-use crate::spearlet::execution::ai::backends::ollama_chat::OllamaChatBackendAdapter;
 use crate::spearlet::execution::ai::backends::chat_http::OpenAIChatCompletionBackendAdapter;
+use crate::spearlet::execution::ai::backends::ollama_chat::OllamaChatBackendAdapter;
 use crate::spearlet::execution::ai::backends::rt_asr_openai_ws::OpenAIRealtimeWsBackendAdapter;
 use crate::spearlet::execution::ai::backends::rt_asr_qwen_ws::QwenAsrRealtimeWsBackendAdapter;
 use crate::spearlet::execution::ai::backends::stub::StubBackendAdapter;
@@ -128,12 +128,8 @@ impl RuntimeBackendFamily {
     fn from_kind(kind: &str) -> Self {
         match CanonicalBackendKind::parse(kind) {
             CanonicalBackendKind::ChatHttp => Self::ChatHttp,
-            CanonicalBackendKind::RtAsrOpenAiWs => {
-                Self::RtAsrOpenAiWs
-            }
-            CanonicalBackendKind::RtAsrQwenWs => {
-                Self::RtAsrQwenWs
-            }
+            CanonicalBackendKind::RtAsrOpenAiWs => Self::RtAsrOpenAiWs,
+            CanonicalBackendKind::RtAsrQwenWs => Self::RtAsrQwenWs,
             CanonicalBackendKind::OllamaChat => Self::OllamaChat,
             CanonicalBackendKind::Stub => Self::Stub,
             other => Self::Unknown(other.as_str().to_string()),
@@ -144,9 +140,7 @@ impl RuntimeBackendFamily {
     /// 返回一个运行时家族在固定情况下支持的 operation 集合。
     fn supported_operations(&self) -> Option<&'static [Operation]> {
         match self {
-            Self::ChatHttp | Self::OllamaChat | Self::Stub => {
-                Some(&[Operation::ChatCompletions])
-            }
+            Self::ChatHttp | Self::OllamaChat | Self::Stub => Some(&[Operation::ChatCompletions]),
             Self::RtAsrOpenAiWs => Some(&[Operation::SpeechToText]),
             Self::RtAsrQwenWs => Some(&[Operation::SpeechToText]),
             Self::Unknown(_) => None,
@@ -506,22 +500,18 @@ pub fn build_adapter_from_spec(
             }
             Some(Arc::new(a))
         }
-        RuntimeBackendFamily::RtAsrOpenAiWs => {
-            Some(Arc::new(OpenAIRealtimeWsBackendAdapter::new(
-                spec.name.clone(),
-                spec.base_url.clone(),
-                cred_ref.map(ToOwned::to_owned),
-                credential_resolver.cloned(),
-            )))
-        }
-        RuntimeBackendFamily::RtAsrQwenWs => {
-            Some(Arc::new(QwenAsrRealtimeWsBackendAdapter::new(
-                spec.name.clone(),
-                spec.base_url.clone(),
-                cred_ref.map(ToOwned::to_owned),
-                credential_resolver.cloned(),
-            )))
-        }
+        RuntimeBackendFamily::RtAsrOpenAiWs => Some(Arc::new(OpenAIRealtimeWsBackendAdapter::new(
+            spec.name.clone(),
+            spec.base_url.clone(),
+            cred_ref.map(ToOwned::to_owned),
+            credential_resolver.cloned(),
+        ))),
+        RuntimeBackendFamily::RtAsrQwenWs => Some(Arc::new(QwenAsrRealtimeWsBackendAdapter::new(
+            spec.name.clone(),
+            spec.base_url.clone(),
+            cred_ref.map(ToOwned::to_owned),
+            credential_resolver.cloned(),
+        ))),
         RuntimeBackendFamily::OllamaChat => Some(Arc::new(OllamaChatBackendAdapter::new(
             spec.name.clone(),
             spec.base_url.clone(),

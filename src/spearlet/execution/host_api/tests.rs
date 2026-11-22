@@ -1,7 +1,5 @@
 use super::*;
-use crate::spearlet::execution::ai::backends::{
-    KIND_CHAT_HTTP, KIND_RT_ASR_OPENAI_WS, KIND_STUB,
-};
+use crate::spearlet::execution::ai::backends::{KIND_CHAT_HTTP, KIND_RT_ASR_OPENAI_WS, KIND_STUB};
 use crate::spearlet::execution::ai::ir::{
     CanonicalRequestEnvelope, ChatCompletionsPayload, ChatMessage, Operation, Payload,
     RoutingHints, SpeechToTextPayload,

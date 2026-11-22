@@ -128,7 +128,10 @@ async fn test_admin_ai_model_views_lists_local_and_remote_models() {
         .await
         .json();
     assert!(local_backend["success"].as_bool().unwrap());
-    assert_eq!(local_backend["backend"]["local"]["provider_family"], "llamacpp");
+    assert_eq!(
+        local_backend["backend"]["local"]["provider_family"],
+        "llamacpp"
+    );
     assert_eq!(
         local_backend["backend"]["local"]["config"]["model_path"],
         "/models/llama3.gguf"
@@ -572,10 +575,7 @@ async fn test_admin_ai_backend_detail_returns_typed_remote_read_view() {
 
     assert!(body["success"].as_bool().unwrap());
     assert!(body["found"].as_bool().unwrap());
-    assert_eq!(
-        body["backend"]["remote"]["provider_family"],
-        "openai"
-    );
+    assert_eq!(body["backend"]["remote"]["provider_family"], "openai");
     assert_eq!(
         body["backend"]["remote"]["config"]["base_url"],
         "https://api.openai.com/v1"

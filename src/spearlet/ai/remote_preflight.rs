@@ -35,19 +35,17 @@ impl RemotePreflightProviderFamily {
         let provider = CanonicalBackendProvider::parse(&spec.provider);
         let kind = CanonicalBackendKind::parse(&spec.kind);
 
-        if provider == CanonicalBackendProvider::Ollama || kind == CanonicalBackendKind::OllamaChat {
+        if provider == CanonicalBackendProvider::Ollama || kind == CanonicalBackendKind::OllamaChat
+        {
             return Self::Ollama;
         }
-        if provider == CanonicalBackendProvider::Qwen
-            || kind == CanonicalBackendKind::RtAsrQwenWs
-        {
+        if provider == CanonicalBackendProvider::Qwen || kind == CanonicalBackendKind::RtAsrQwenWs {
             return Self::Qwen;
         }
         if provider == CanonicalBackendProvider::OpenAi
             || matches!(
                 kind,
-                CanonicalBackendKind::ChatHttp
-                    | CanonicalBackendKind::RtAsrOpenAiWs
+                CanonicalBackendKind::ChatHttp | CanonicalBackendKind::RtAsrOpenAiWs
             )
         {
             return Self::OpenAiCompatible;
@@ -205,7 +203,9 @@ pub async fn preflight_remote_backend(
         RemotePreflightProviderFamily::OpenAiCompatible => {
             preflight_openai(http, resolver, spec, &requested, started).await
         }
-        RemotePreflightProviderFamily::Qwen => preflight_qwen(http, resolver, spec, &requested, started).await,
+        RemotePreflightProviderFamily::Qwen => {
+            preflight_qwen(http, resolver, spec, &requested, started).await
+        }
         RemotePreflightProviderFamily::Ollama => {
             preflight_ollama(http, spec, &requested, started).await
         }
@@ -559,8 +559,12 @@ async fn preflight_ollama(
     let status = response.status().as_u16();
     let payload = response.json::<Value>().await.ok();
     if !(200..300).contains(&status) {
-        let (error_code, provider_code, message) =
-            map_http_failure(BACKEND_PROVIDER_OLLAMA, "connectivity", status, payload.as_ref());
+        let (error_code, provider_code, message) = map_http_failure(
+            BACKEND_PROVIDER_OLLAMA,
+            "connectivity",
+            status,
+            payload.as_ref(),
+        );
         return RemoteBackendPreflightReport::failure(
             BACKEND_PROVIDER_OLLAMA,
             "connectivity",
@@ -634,8 +638,8 @@ async fn preflight_ollama(
 mod tests {
     use super::*;
     use crate::ai_backend_types::{
-        BACKEND_FAMILY_CHAT_HTTP, BACKEND_FAMILY_OLLAMA_CHAT,
-        BACKEND_FAMILY_RT_ASR_OPENAI_WS, BACKEND_FAMILY_RT_ASR_QWEN_WS,
+        BACKEND_FAMILY_CHAT_HTTP, BACKEND_FAMILY_OLLAMA_CHAT, BACKEND_FAMILY_RT_ASR_OPENAI_WS,
+        BACKEND_FAMILY_RT_ASR_QWEN_WS,
     };
     use axum::{routing::get, Json, Router};
     use serde_json::json;
@@ -811,7 +815,11 @@ mod tests {
                 provider: BACKEND_PROVIDER_QWEN.to_string(),
                 ..test_backend_spec(BACKEND_FAMILY_RT_ASR_QWEN_WS, BACKEND_PROVIDER_QWEN)
             },
-            &["connectivity".to_string(), "auth".to_string(), "model_access".to_string()],
+            &[
+                "connectivity".to_string(),
+                "auth".to_string(),
+                "model_access".to_string(),
+            ],
         )
         .await;
 

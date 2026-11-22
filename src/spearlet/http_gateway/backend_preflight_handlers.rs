@@ -208,12 +208,8 @@ impl BackendPreflightProviderFamily {
         outcome: BackendPreflightOutcomeResponse,
     ) -> BackendPreflightProviderResultResponse {
         match self {
-            Self::OpenAiCompatible => {
-                BackendPreflightProviderResultResponse::OpenAiCompatible {
-                    outcome: BackendPreflightOpenAiCompatibleOutcomeResponse::from_generic(
-                        outcome,
-                    ),
-                }
+            Self::OpenAiCompatible => BackendPreflightProviderResultResponse::OpenAiCompatible {
+                outcome: BackendPreflightOpenAiCompatibleOutcomeResponse::from_generic(outcome),
             },
             Self::Qwen => BackendPreflightProviderResultResponse::Qwen {
                 outcome: BackendPreflightOpenAiCompatibleOutcomeResponse::from_generic(outcome),

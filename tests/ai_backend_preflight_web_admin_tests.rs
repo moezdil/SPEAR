@@ -325,10 +325,7 @@ async fn test_admin_ai_backend_preflight_supports_remote_backends() {
     assert_eq!(results[0]["node_uuid"], "node-preflight-remote-1");
     assert_eq!(results[0]["success"], true);
     assert_eq!(results[0]["details"]["kind"], "remote_provider");
-    assert_eq!(
-        results[0]["details"]["result"]["provider_family"],
-        "openai"
-    );
+    assert_eq!(results[0]["details"]["result"]["provider_family"], "openai");
     assert_eq!(
         results[0]["details"]["result"]["outcome"]["outcome_kind"],
         "model_access_verified"
@@ -413,10 +410,7 @@ async fn test_admin_ai_backend_preflight_surfaces_openai_auth_failure_shape() {
     assert_eq!(results[0]["node_uuid"], "node-preflight-remote-failure-1");
     assert_eq!(results[0]["success"], false);
     assert_eq!(results[0]["details"]["kind"], "remote_provider");
-    assert_eq!(
-        results[0]["details"]["result"]["provider_family"],
-        "openai"
-    );
+    assert_eq!(results[0]["details"]["result"]["provider_family"], "openai");
     assert_eq!(
         results[0]["details"]["result"]["outcome"]["outcome_kind"],
         "auth_failed"

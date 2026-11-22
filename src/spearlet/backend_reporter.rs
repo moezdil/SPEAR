@@ -289,7 +289,11 @@ mod tests {
         let global = crate::spearlet::ai::dynamic_backend_registry::global_dynamic_backends();
         global.set_backends(
             DynamicBackendSource::AiControlPlane,
-            vec![mk_backend("cp-remote", BACKEND_FAMILY_CHAT_HTTP, BackendOrigin::Sms)],
+            vec![mk_backend(
+                "cp-remote",
+                BACKEND_FAMILY_CHAT_HTTP,
+                BackendOrigin::Sms,
+            )],
         );
 
         let reported = collect_reportable_backends(&cfg);

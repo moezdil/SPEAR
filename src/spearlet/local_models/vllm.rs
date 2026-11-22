@@ -155,9 +155,7 @@ fn parse_truthy(value: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ai_backend_types::{
-        BACKEND_FAMILY_VLLM_OPENAI_COMPATIBLE, BACKEND_PROVIDER_VLLM,
-    };
+    use crate::ai_backend_types::{BACKEND_FAMILY_VLLM_OPENAI_COMPATIBLE, BACKEND_PROVIDER_VLLM};
     use crate::proto::sms::{BackendHosting, BackendOrigin};
 
     fn sample_spec() -> BackendSpec {

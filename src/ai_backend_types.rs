@@ -236,9 +236,7 @@ impl CanonicalBackendKind {
     pub fn allowed_hosting(&self) -> AllowedHosting {
         match self {
             Self::LlamaCpp | Self::Vllm | Self::VllmOpenAiCompatible => AllowedHosting::LocalOnly,
-            Self::ChatHttp | Self::RtAsrOpenAiWs => {
-                AllowedHosting::RemoteOnly
-            }
+            Self::ChatHttp | Self::RtAsrOpenAiWs => AllowedHosting::RemoteOnly,
             Self::RtAsrQwenWs => AllowedHosting::RemoteOnly,
             Self::OllamaChat => AllowedHosting::Any,
             Self::Stub | Self::Unknown(_) => AllowedHosting::Any,
@@ -446,9 +444,10 @@ impl CanonicalBackendManagementMode {
 #[cfg(test)]
 mod tests {
     use super::{
-        AllowedHosting, CanonicalBackendDesiredState, CanonicalBackendHosting, CanonicalBackendKind,
-        CanonicalBackendManagementMode, CanonicalBackendOrigin, CanonicalBackendProvider,
-        BACKEND_FAMILY_LLAMACPP, BACKEND_FAMILY_OLLAMA_CHAT, BACKEND_FAMILY_RT_ASR_OPENAI_WS,
+        AllowedHosting, CanonicalBackendDesiredState, CanonicalBackendHosting,
+        CanonicalBackendKind, CanonicalBackendManagementMode, CanonicalBackendOrigin,
+        CanonicalBackendProvider, BACKEND_FAMILY_LLAMACPP, BACKEND_FAMILY_OLLAMA_CHAT,
+        BACKEND_FAMILY_RT_ASR_OPENAI_WS,
     };
 
     #[test]

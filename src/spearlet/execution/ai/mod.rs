@@ -168,8 +168,8 @@ impl AiEngine {
 mod tests {
     use super::*;
     use crate::ai_backend_types::BACKEND_PROVIDER_INTERNAL;
-    use crate::spearlet::execution::ai::backends::KIND_STUB;
     use crate::spearlet::execution::ai::backends::stub::StubBackendAdapter;
+    use crate::spearlet::execution::ai::backends::KIND_STUB;
     use crate::spearlet::execution::ai::ir::{
         ChatCompletionsPayload, ChatMessage, Operation, Requirements, ResultPayload, RoutingHints,
     };

@@ -88,7 +88,11 @@ fn build_audio_for_backend(kind: &str) -> (Vec<u8>, u32) {
 /// 用简单的最近邻重采样，把 16 kHz 单声道 s16 PCM 转成 24 kHz 单声道 s16 PCM。
 /// 这样可以保持 live-test 夹具精简，避免为不同 provider 采样率各存一份二进制文件。
 fn upsample_pcm_s16le_mono_16k_to_24k(src: &[u8]) -> Vec<u8> {
-    assert_eq!(src.len() % 2, 0, "pcm fixture must be aligned to i16 samples");
+    assert_eq!(
+        src.len() % 2,
+        0,
+        "pcm fixture must be aligned to i16 samples"
+    );
     let samples: Vec<i16> = src
         .chunks_exact(2)
         .map(|chunk| i16::from_le_bytes([chunk[0], chunk[1]]))
@@ -214,9 +218,7 @@ fn run_backend_live_case(backend: &common::ResolvedBackend) {
         backend.kind
     );
     assert!(
-        normalized.contains("hello")
-            || normalized.contains("qwen")
-            || normalized.contains("test"),
+        normalized.contains("hello") || normalized.contains("qwen") || normalized.contains("test"),
         "unexpected transcript for backend={} kind={}: {}",
         backend.name,
         backend.kind,
